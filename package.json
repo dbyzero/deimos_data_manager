@@ -1,0 +1,31 @@
+{
+  "name": "puck-backend",
+  "version": "0.0.1",
+  "description": "Puck back office project",
+  "main": "public/app.js",
+  "dependencies": {},
+  "devDependencies": {
+    "bower": "^1.5.3",
+    "brunch": "^1.8.5",
+    "css-brunch": "^1.7.0",
+    "eslint": "^1.6.0",
+    "eslint-plugin-react": "^3.5.1",
+    "javascript-brunch": "^1.7.1",
+    "less-brunch": "^1.8.1",
+    "react-brunch": "^1.0.9",
+    "sass-brunch": "^1.9.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dbyzero/puck-backend.git"
+  },
+  "author": "dbyzero",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dbyzero/puck-backend/issues"
+  },
+  "homepage": "https://github.com/dbyzero/puck-backend#readme"
+}
