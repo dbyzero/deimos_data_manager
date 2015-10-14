@@ -23,7 +23,8 @@
     "react": "~0.13.3",
     "bootstrap": "~3.3.5",
     "react-form-generator": "*",
-    "react-router": "~0.13.4"
+    "react-router": "~0.13.4",
+    "reflux": "~0.2.13"
   },
   "overrides": {
     "react-form-generator": {

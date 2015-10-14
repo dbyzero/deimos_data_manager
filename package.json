@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/dbyzero/puck-backend/issues"
   },
-  "homepage": "https://github.com/dbyzero/puck-backend#readme"
+  "homepage": "https://github.com/dbyzero/puck-backend#readme",
+  "eslintConfig": {
+    "extends": "./eslintrc"
+  }
 }
