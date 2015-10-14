@@ -1,4 +1,5 @@
-var env = "../../env";
+var env = require("../../env");
+
 var sessionActions = Reflux.createActions([
     "get",
     "getSuccess",
