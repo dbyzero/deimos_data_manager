@@ -21,14 +21,16 @@ var Session = React.createClass({
                 <h1>Sessions</h1>
                     <div className="table-responsive">
                         <table className="table table-hover table-striped">
-                            <tr>
-                                <th>ID</th>
-                                <th>IP</th>
-                                <th>Account</th>
-                                <th>Game Level</th>
-                                <th>Actions</th>
-                            </tr>
-                            {renderRows(this.state.sessionStore)}
+                            <tbody>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>IP</th>
+                                    <th>Account</th>
+                                    <th>Game Level</th>
+                                    <th>Actions</th>
+                                </tr>
+                                {renderRows(this.state.sessionStore)}
+                            </tbody>
                         </table>
                     </div>
             </div>
@@ -46,7 +48,7 @@ var renderRows = function (dataRows) {
 
 var renderRow = function (dataRow) {
     return (
-        <tr key={dataRow.id}>
+        <tr>
             <td>{dataRow.id}</td>
             <td>{dataRow.ip}</td>
             <td>{dataRow.account}</td>
