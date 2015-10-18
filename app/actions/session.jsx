@@ -6,10 +6,7 @@ var sessionActions = Reflux.createActions([
     "getFail",
     "delete",
     "deleteSuccess",
-    "deleteFail",
-    "post",
-    "postSuccess",
-    "postFail"
+    "deleteFail"
 ]);
 
 sessionActions.get.listen(function () {
@@ -17,7 +14,6 @@ sessionActions.get.listen(function () {
     jQuery.ajax({
         method: 'GET',
         url: env.apiURL + '/sessions',
-        data: {},
         dataType: 'json',
         crossDomain: true,
         success: sessionActions.getSuccess,
@@ -25,12 +21,20 @@ sessionActions.get.listen(function () {
     });
 });
 
-sessionActions.delete.listen(function () {
+sessionActions.delete.listen(function (id) {
     console.debug('sessionActions#delete', 'arguments:', arguments);
-});
-
-sessionActions.post.listen(function () {
-    console.debug('sessionActions#post', 'arguments:', arguments);
+    jQuery.ajax({
+        contentType: 'text/plain',
+        method: 'DELETE',
+        url: env.apiURL + '/session/unregister/' + id,
+        crossDomain: true,
+        success: function () {
+            sessionActions.deleteSuccess(id);
+        },
+        error: function () {
+            sessionActions.deleteFail(id);
+        }
+    });
 });
 
 /** Success callbacks **/
@@ -39,12 +43,10 @@ sessionActions.getSuccess.listen(function () {
     console.debug('sessionActions#getSuccess', 'arguments:', arguments);
 });
 
-sessionActions.deleteSuccess.listen(function () {
+sessionActions.deleteSuccess.listen(function (id) {
     console.debug('sessionActions#deleteSuccess', 'arguments:', arguments);
-});
-
-sessionActions.postSuccess.listen(function () {
-    console.debug('sessionActions#postSuccess', 'arguments:', arguments);
+    //refill sessions list
+    sessionActions.get();
 });
 
 /** Failed callbacks **/
@@ -53,12 +55,8 @@ sessionActions.getFail.listen(function () {
     console.debug('sessionActions#getFail', 'arguments:', arguments);
 });
 
-sessionActions.deleteFail.listen(function () {
+sessionActions.deleteFail.listen(function (id) {
     console.debug('sessionActions#deleteFail', 'arguments:', arguments);
-});
-
-sessionActions.postFail.listen(function () {
-    console.debug('sessionActions#postFail', 'arguments:', arguments);
 });
 
 module.exports = sessionActions;

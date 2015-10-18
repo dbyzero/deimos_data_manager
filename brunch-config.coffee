@@ -6,3 +6,5 @@ module.exports = config:
     stylesheets: joinTo:
       'libraries.css': /^bower_components/
       'app.css': /^app/
+  watcher:
+    usePolling: true

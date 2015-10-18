@@ -12,10 +12,6 @@ var sessionStore = Reflux.createStore({
         this.trigger(sessionList);
     },
 
-    onPostSuccess: function () {
-        console.debug('sessionStore#onPostSuccess', 'arguments:', arguments);
-    },
-
     onDeleteSuccess: function () {
         console.debug('sessionStore#onDeleteSuccess', 'arguments:', arguments);
     }
