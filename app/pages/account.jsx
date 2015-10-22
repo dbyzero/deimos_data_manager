@@ -1,15 +1,36 @@
 var accountActions = require('../actions/account');
 var accountStore = require('../stores/account');
 
+var Glyphicon = ReactBootstrap.Glyphicon;
+var Button = ReactBootstrap.Button;
+var ButtonToolbar = ReactBootstrap.ButtonToolbar;
+var Table = ReactBootstrap.Table;
+var Modal = ReactBootstrap.Modal;
+
 var Account = React.createClass({
 
     mixins: [Reflux.connect(accountStore, "accountStore")],
 
     getInitialState: function () {
         return {
-            accountStore: [],
-            accountSelected: null
+            accountStore: [{
+                id: 1,
+                login: 'foobar',
+                password: 'rototo',
+                usedBySession: 'iudshfaoisdufhsdifh',
+                mail: 'foor@bar.biz'
+            }],
+            accountSelected: null,
+            editPopupShown: false
         };
+    },
+
+    showEditPopup: function () {
+        this.setState({'editPopupShown': true});
+    },
+
+    hideEditPopup: function () {
+        this.setState({'editPopupShown': false});
     },
 
     componentWillMount: function () {
@@ -18,29 +39,27 @@ var Account = React.createClass({
 
     render: function () {
         return (
-            <div className="row">
+            <div>
                 <h1>
                     Accounts&nbsp;
-                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#editAccount" onClick={this.onCreateButtonClick}>
-                        <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    </button>
+                    <Button bsStyle="primary"><Glyphicon glyph="plus" /></Button>
                 </h1>
-                <div className="table-responsive">
-                    <table className="table table-hover table-striped">
-                        <tbody>
-                            <tr>
-                                <th>ID</th>
-                                <th>Login</th>
-                                <th>Password</th>
-                                <th>Used by session</th>
-                                <th>Mail</th>
-                                <th>Actions</th>
-                            </tr>
-                            {this.renderRows()}
-                        </tbody>
-                    </table>
-                </div>
-                {this.renderPopupDelete()}
+                <Table striped bordered condensed hover>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Login</th>
+                            <th>Password</th>
+                            <th>Used by session</th>
+                            <th>Mail</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.renderRows()}
+                    </tbody>
+                </Table>
+                {/*this.renderPopupDelete()*/}
                 {this.renderPopupEdit()}
             </div>
         );
@@ -64,13 +83,11 @@ var Account = React.createClass({
                 <td>{dataRow.usedBySession}</td>
                 <td>{dataRow.mail}</td>
                 <td>
-                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#editAccount" data-id={dataRow.id} onClick={this.onActionButtonClick}>
-                        <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    </button>&nbsp;
-                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#deleteAccount" data-id={dataRow.id} onClick={this.onActionButtonClick}>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </button>
-                </td>
+                  <ButtonToolbar>
+                    <Button bsStyle="primary" onClick={this.showEditPopup}><Glyphicon glyph="edit" /></Button>
+                    <Button bsStyle="primary"><Glyphicon glyph="trash" /></Button>
+                  </ButtonToolbar>
+              </td>
             </tr>
         );
     },
@@ -107,39 +124,32 @@ var Account = React.createClass({
      */
     renderPopupEdit: function () {
         return (
-            <div className="modal fade" id="editAccount" tabIndex="-1" role="dialog">
-              <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 className="modal-title" id="exampleModalLabel">
-                        {this.state.accountSelected ? "Edit" : "Create"} Account <strong>{this.state.accountSelected ? this.state.accountSelected.login : ""}</strong> {this.state.accountSelected ? "(ID:" + this.state.accountSelected.id + ")" : ""}
-                    </h4>
+            <Modal show={this.state.editPopupShown} onHide={this.hideEditPopup}>
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Account</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <form>
+                  <input ref="formEditAccountId" value={this.state.accountSelected ? this.state.accountSelected.id : ""} id="formEditAccountId" type="hidden"/>
+                  <div className="form-group">
+                      <label htmlFor="formEditAccountLogin">Login</label>
+                      <input ref="formEditAccountLogin" value={this.state.accountSelected ? this.state.accountSelected.login : ""} id="formEditAccountLogin" className="form-control" type="text"/>
                   </div>
-                  <div className="modal-body">
-                      <form>
-                        <input ref="formEditAccountId" value={this.state.accountSelected ? this.state.accountSelected.id : ""} id="formEditAccountId" type="hidden"/>
-                        <div className="form-group">
-                            <label htmlFor="formEditAccountLogin">Login</label>
-                            <input ref="formEditAccountLogin" value={this.state.accountSelected ? this.state.accountSelected.login : ""} id="formEditAccountLogin" className="form-control" type="text"/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="formEditAccountPassword">Password</label>
-                            <input ref="formEditAccountPassword" value={this.state.accountSelected ? this.state.accountSelected.password : ""} id="formEditAccountPassword" className="form-control" type="text"/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="formEditAccountEmail">Email</label>
-                            <input ref="formEditAccountEmail" value={this.state.accountSelected ? this.state.accountSelected.mail : ""} id="formEditAccountEmail" className="form-control" type="email"/>
-                        </div>
-                      </form>
+                  <div className="form-group">
+                      <label htmlFor="formEditAccountPassword">Password</label>
+                      <input ref="formEditAccountPassword" value={this.state.accountSelected ? this.state.accountSelected.password : ""} id="formEditAccountPassword" className="form-control" type="text"/>
                   </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-default" data-dismiss="modal" onClick={this.unselectAccount}>Cancel</button>
-                    <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.editAccount}>Save</button>
+                  <div className="form-group">
+                      <label htmlFor="formEditAccountEmail">Email</label>
+                      <input ref="formEditAccountEmail" value={this.state.accountSelected ? this.state.accountSelected.mail : ""} id="formEditAccountEmail" className="form-control" type="email"/>
                   </div>
-                </div>
-              </div>
-            </div>
+                </form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button onClick={this.hideEditPopup}>Cancel</Button>
+                <Button onClick={this.editAccount}>Save</Button>
+              </Modal.Footer>
+            </Modal>
         );
     },
 

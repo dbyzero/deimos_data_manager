@@ -9,6 +9,6 @@ module.exports = {
 
 var initRouter = function () {
     Router.run(routes, Router.HashLocation, function (Root) {
-        React.render(<Root/>, document.body);
+        React.render(<Root/>, document.getElementById('app'));
     });
 };

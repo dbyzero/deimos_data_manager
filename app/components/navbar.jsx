@@ -1,46 +1,36 @@
-var NavBar = React.createClass({
+var Navbar = ReactBootstrap.Navbar;
+var Nav = ReactBootstrap.Nav;
+var NavItem = ReactBootstrap.NavItem;
+var NavBrand = ReactBootstrap.NavBrand;
+var NavDropdown = ReactBootstrap.NavDropdown;
+var MenuItem = ReactBootstrap.MenuItem;
+
+var NavBarComponent = React.createClass({
     render: function () {
         return (
-            <nav className="navbar navbar-default">
-                <div className="container-fluid">
-                    <div className="navbar-header">
-                        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                            <span className="sr-only">Toggle navigation</span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
-                        </button>
-                        <a className="navbar-brand" href="/#/">Home</a>
-                    </div>
-                    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul className="nav navbar-nav">
-                            <li><a href="/#/sessions">Sessions</a></li>
-                            <li><a href="/#/accounts">Accounts</a></li>
-                            <li><a href="/#/avatars">Avatars</a></li>
-                            <li><a href="/#/gamelevels">GameLevels</a></li>
-                            <li><a href="/#/skills">Skills</a></li>
-                            <li><a href="/#/effects">Effects</a></li>
-                            <li className="dropdown">
-                                <a className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Templates <span className="caret"></span></a>
-                                <ul className="dropdown-menu">
-                                    <li><a href="/#/monstertemplates">Monster Templates</a></li>
-                                    <li><a href="/#/pettemplates">Pet Templates</a></li>
-                                    <li role="separator" className="divider"></li>
-                                    <li><a href="/#/itemtemplates">Item Templates</a></li>
-                                    <li role="separator" className="divider"></li>
-                                    <li><a href="/#/pulsezonetemplates">PulseZone templates</a></li>
-                                    <li role="separator" className="divider"></li>
-                                    <li><a href="/#/aurazonetemplates">AuraZone templates</a></li>
-                                    <li role="separator" className="divider"></li>
-                                    <li><a href="/#/rectanglezonetemplates">RectangleZone templates</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+          <Navbar toggleNavKey={0}>
+            <NavBrand>Puck</NavBrand>
+            <Nav eventKey={0}>
+              <NavItem eventKey={1} href="/#/sessions">Sessions</NavItem>
+              <NavItem eventKey={2} href="/#/accounts">Accounts</NavItem>
+              <NavItem eventKey={3} href="/#/avatars">Avatars</NavItem>
+              <NavItem eventKey={4} href="/#/gamelevels">GameLevels</NavItem>
+              <NavItem eventKey={5} href="/#/skills">Skills</NavItem>
+              <NavItem eventKey={6} href="/#/effectes">Effects</NavItem>
+              <NavDropdown eventKey={7} title="Templates" id="basic-nav-dropdown">
+                <MenuItem eventKey="1">Monster Templates</MenuItem>
+                <MenuItem eventKey="2">Pet Templates</MenuItem>
+                <MenuItem divider />
+                <MenuItem eventKey="3">Item Templates</MenuItem>
+                <MenuItem divider />
+                <MenuItem eventKey="4">PulseZone templates</MenuItem>
+                <MenuItem eventKey="5">AuraZone templates</MenuItem>
+                <MenuItem eventKey="6">RectangleZone templates</MenuItem>
+              </NavDropdown>
+            </Nav>
+          </Navbar>
         );
     }
 });
 
-module.exports = NavBar;
+module.exports = NavBarComponent;

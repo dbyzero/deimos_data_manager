@@ -11,7 +11,7 @@ var sessionActions = Reflux.createActions([
 
 sessionActions.get.listen(function () {
     console.debug('sessionActions#get', 'arguments:', arguments);
-    jQuery.ajax({
+    $.ajax({
         method: 'GET',
         url: env.apiURL + '/sessions',
         dataType: 'json',
@@ -23,7 +23,7 @@ sessionActions.get.listen(function () {
 
 sessionActions.delete.listen(function (id) {
     console.debug('sessionActions#delete', 'arguments:', arguments);
-    jQuery.ajax({
+    $.ajax({
         contentType: 'text/plain',
         method: 'DELETE',
         url: env.apiURL + '/session/unregister/' + id,

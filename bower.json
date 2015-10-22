@@ -20,11 +20,11 @@
     "tests"
   ],
   "dependencies": {
-    "react": "~0.13.3",
-    "react-router": "~0.13.4",
+    "react-router": "~0.13",
     "reflux": "~0.2.13",
     "lodash": "~3.10.1",
-    "react-bootstrap": "~0.27.2"
+    "react-bootstrap": "~0.26.2",
+    "bootstrap": "~3.3.5"
   },
   "overrides": {
     "react-form-generator": {

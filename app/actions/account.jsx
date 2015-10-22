@@ -14,7 +14,7 @@ var accountActions = Reflux.createActions([
 
 accountActions.get.listen(function () {
     console.debug('accountActions#get', 'arguments:', arguments);
-    jQuery.ajax({
+    $.ajax({
         method: 'GET',
         url: env.apiURL + '/accounts',
         dataType: 'json',
@@ -26,7 +26,7 @@ accountActions.get.listen(function () {
 
 accountActions.delete.listen(function (id) {
     console.debug('accountActions#delete', 'arguments:', arguments);
-    jQuery.ajax({
+    $.ajax({
         contentType: 'text/plain',
         method: 'DELETE',
         url: env.apiURL + '/account/del/' + id,
@@ -43,7 +43,7 @@ accountActions.delete.listen(function (id) {
 accountActions.post.listen(function (data) {
     console.debug('accountActions#post', 'arguments:', arguments);
 
-    jQuery.ajax({
+    $.ajax({
         method: 'POST',
         url: env.apiURL + '/account/update/' + data.id,
         data: data,

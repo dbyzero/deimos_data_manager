@@ -7,9 +7,11 @@
     "globals": {
         "React": true,
         "ReactRouter": true,
+        "ReactDOM": true,
         "Reflux": true,
         "$": true, //JQuery
         "jQuery": true,
+        "ReactBootstrap": true
     },
 
     "ecmaFeatures": {
