@@ -40,8 +40,22 @@ accountActions.delete.listen(function (id) {
     });
 });
 
-accountActions.post.listen(function () {
+accountActions.post.listen(function (data) {
     console.debug('accountActions#post', 'arguments:', arguments);
+
+    jQuery.ajax({
+        method: 'POST',
+        url: env.apiURL + '/account/update/' + data.id,
+        data: data,
+        dataType: 'json',
+        crossDomain: true,
+        success: function () {
+            accountActions.postSuccess(data.id);
+        },
+        error: function () {
+            accountActions.postFail(data.id);
+        }
+    });
 });
 
 /** Success callbacks **/
@@ -52,12 +66,12 @@ accountActions.getSuccess.listen(function () {
 
 accountActions.deleteSuccess.listen(function (id) {
     console.debug('accountActions#deleteSuccess', 'arguments:', arguments);
-    //refill accounts list
     accountActions.get();
 });
 
 accountActions.postSuccess.listen(function () {
     console.debug('accountActions#postSuccess', 'arguments:', arguments);
+    accountActions.get();
 });
 
 /** Failed callbacks **/

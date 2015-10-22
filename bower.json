@@ -21,10 +21,10 @@
   ],
   "dependencies": {
     "react": "~0.13.3",
-    "bootstrap": "~3.3.5",
-    "react-form-generator": "*",
     "react-router": "~0.13.4",
-    "reflux": "~0.2.13"
+    "reflux": "~0.2.13",
+    "lodash": "~3.10.1",
+    "react-bootstrap": "~0.27.2"
   },
   "overrides": {
     "react-form-generator": {
