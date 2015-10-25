@@ -11,6 +11,7 @@
         "Reflux": true,
         "$": true, //JQuery
         "jQuery": true,
+        "_": true,
         "ReactBootstrap": true
     },
 

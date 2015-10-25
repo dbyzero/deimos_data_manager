@@ -9,7 +9,10 @@ var accountActions = Reflux.createActions([
     "deleteFail",
     "post",
     "postSuccess",
-    "postFail"
+    "postFail",
+    "add",
+    "addSuccess",
+    "addFail"
 ]);
 
 accountActions.get.listen(function () {
@@ -42,7 +45,6 @@ accountActions.delete.listen(function (id) {
 
 accountActions.post.listen(function (data) {
     console.debug('accountActions#post', 'arguments:', arguments);
-
     $.ajax({
         method: 'POST',
         url: env.apiURL + '/account/update/' + data.id,
@@ -54,6 +56,23 @@ accountActions.post.listen(function (data) {
         },
         error: function () {
             accountActions.postFail(data.id);
+        }
+    });
+});
+
+accountActions.add.listen(function (data) {
+    console.debug('accountActions#post', 'arguments:', arguments);
+    $.ajax({
+        method: 'POST',
+        url: env.apiURL + '/account/create/' + data.login + '/' + data.password + '/' + data.mail,
+        data: data,
+        dataType: 'json',
+        crossDomain: true,
+        success: function () {
+            accountActions.addSuccess();
+        },
+        error: function () {
+            accountActions.addFail();
         }
     });
 });
@@ -74,6 +93,10 @@ accountActions.postSuccess.listen(function () {
     accountActions.get();
 });
 
+accountActions.addSuccess.listen(function () {
+    console.debug('accountActions#addSuccess', 'arguments:', arguments);
+    accountActions.get();
+});
 /** Failed callbacks **/
 
 accountActions.getFail.listen(function () {
@@ -86,6 +109,10 @@ accountActions.deleteFail.listen(function (id) {
 
 accountActions.postFail.listen(function () {
     console.debug('accountActions#postFail', 'arguments:', arguments);
+});
+
+accountActions.addFail.listen(function () {
+    console.debug('accountActions#addFail', 'arguments:', arguments);
 });
 
 module.exports = accountActions;
