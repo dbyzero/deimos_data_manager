@@ -1,4 +1,5 @@
 var env = require("../../env");
+var accountActions = require("./account");
 
 var sessionActions = Reflux.createActions([
     "get",
@@ -47,6 +48,7 @@ sessionActions.deleteSuccess.listen(function (id) {
     console.debug('sessionActions#deleteSuccess', 'arguments:', arguments);
     //refill sessions list
     sessionActions.get();
+    accountActions.get();
 });
 
 /** Failed callbacks **/

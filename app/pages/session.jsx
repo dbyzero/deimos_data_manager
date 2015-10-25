@@ -1,13 +1,22 @@
 var sessionActions = require('../actions/session');
 var sessionStore = require('../stores/session');
 
+var Glyphicon = ReactBootstrap.Glyphicon;
+var Button = ReactBootstrap.Button;
+var ButtonToolbar = ReactBootstrap.ButtonToolbar;
+var Table = ReactBootstrap.Table;
+var Modal = ReactBootstrap.Modal;
+var Input = ReactBootstrap.Input;
+
 var Session = React.createClass({
 
     mixins: [Reflux.connect(sessionStore, "sessionStore")],
 
     getInitialState: function () {
         return {
-            sessionStore: []
+            sessionStore: [],
+            deletePopupShown: false,
+            formIdValue: null
         };
     },
 
@@ -19,77 +28,84 @@ var Session = React.createClass({
         return (
             <div className="row">
                 <h1>Sessions</h1>
-                <div className="table-responsive">
-                    <table className="table table-hover table-striped">
-                        <tbody>
-                            <tr>
-                                <th>ID</th>
-                                <th>IP</th>
-                                <th>Account</th>
-                                <th>Game Level</th>
-                                <th>Actions</th>
-                            </tr>
-                            {renderRows(this.state.sessionStore)}
-                        </tbody>
-                    </table>
-                </div>
-                {renderPopupDelete()}
+                <Table striped hover>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>IP</th>
+                            <th>Account</th>
+                            <th>Game Level</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.renderRows()}
+                    </tbody>
+                </Table>
+                <Modal show={this.state.deletePopupShown} onHide={this.hideDeletePopup}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Delete session {this.state.formIdValue}</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                      Do you really want to delete session {this.state.formIdValue} ?
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button onClick={this.hideDeletePopup}>No</Button>
+                    <Button onClick={this.deleteSession} bsStyle="danger">Yes</Button>
+                  </Modal.Footer>
+                </Modal>
             </div>
         );
+    },
+
+    renderRows: function () {
+        var dataRows = this.state.sessionStore;
+        var rows = [];
+        for (var i = 0; i < dataRows.length; i++) {
+            rows.push(this.renderRow(dataRows[i]));
+        }
+        return rows;
+    },
+
+    renderRow: function (dataRow) {
+        return (
+                <tr key={dataRow.id}>
+                    <td>{dataRow.id}</td>
+                    <td>{dataRow.ip}</td>
+                    <td>{dataRow.account}</td>
+                    <td>{dataRow.gamearea}</td>
+                    <td>
+                      <ButtonToolbar>
+                        <Button bsStyle="primary" onClick={this.showDeletePopup} data-id={dataRow.id}><Glyphicon glyph="trash" /></Button>
+                      </ButtonToolbar>
+                    </td>
+                </tr>
+            );
+    },
+
+    deleteSession: function () {
+        sessionActions.delete(this.state.formIdValue);
+        this.hideDeletePopup();
+    },
+
+    resetFormValue: function () {
+        this.setState({
+            'formIdValue': null
+        });
+    },
+
+    showDeletePopup: function (e) {
+        var id = e.currentTarget.dataset.id;
+        this.setState({
+            'deletePopupShown': true,
+            'formIdValue': id
+        });
+    },
+
+    hideDeletePopup: function () {
+        this.setState({'deletePopupShown': false});
+        this.resetFormValue();
     }
 });
 
-var renderRows = function (dataRows) {
-    var rows = [];
-    for (var i = 0; i < dataRows.length; i++) {
-        rows.push(renderRow(dataRows[i]));
-    }
-    return rows;
-};
-
-var renderRow = function (dataRow) {
-    return (
-        <tr key={dataRow.id}>
-            <td>{dataRow.id}</td>
-            <td>{dataRow.ip}</td>
-            <td>{dataRow.account}</td>
-            <td>{dataRow.gamearea}</td>
-            <td>
-                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#deleteSession" data-id={dataRow.id} onClick={fillDeletePopup}>
-                    <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                </button>
-            </td>
-        </tr>
-    );
-};
-
-/**
- *  Popup toggling is managed by bootstrap with element class name
- */
-var renderPopupDelete = function () {
-    return (
-        <div className="modal fade" id="deleteSession" tabIndex="-1" role="dialog">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 className="modal-title" id="exampleModalLabel">Delete Session <span id="modalPopupDelelteSessionId"></span></h4>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-default" data-dismiss="modal">No</button>
-                <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={deleteSession}>Yes</button>
-              </div>
-            </div>
-          </div>
-        </div>
-    );
-};
-
-var fillDeletePopup = function (event) {
-    jQuery("#modalPopupDelelteSessionId").text(event.currentTarget.dataset.id);
-};
-
-var deleteSession = function (event) {
-    sessionActions.delete(jQuery("#modalPopupDelelteSessionId").text());
-};
 module.exports = Session;

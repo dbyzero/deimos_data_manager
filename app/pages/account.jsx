@@ -54,10 +54,9 @@ var Account = React.createClass({
                 {/* Delete Popup */}
                 <Modal show={this.state.deletePopupShown} onHide={this.hideDeletePopup}>
                   <Modal.Header closeButton>
-                    <Modal.Title>Delete Account {this.state.formLoginValue} (ID:{this.state.formIdValue})</Modal.Title>
+                    <Modal.Title>Delete account {this.state.formLoginValue} (ID:{this.state.formIdValue})</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                      <Input ref="formDeleteAccountId" value={this.state.fomrIdValue} id="formDeleteAccountId" type="hidden"/>
                       Do you really want to delete account {this.state.formLoginValue} ?
                   </Modal.Body>
                   <Modal.Footer>
@@ -69,10 +68,9 @@ var Account = React.createClass({
                 {/* Edit Popup */}
                 <Modal show={this.state.editPopupShown} onHide={this.hideEditPopup}>
                   <Modal.Header closeButton>
-                    <Modal.Title>{this.state.formIsNew ? "Create" : "Edit"} Account {this.state.formLoginValue} (ID:{this.state.formIdValue || "n/a"})</Modal.Title>
+                    <Modal.Title>{this.state.formIsNew ? "Create" : "Edit"} account {this.state.formLoginValue} (ID:{this.state.formIdValue || "n/a"})</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                    <Input type="hidden" value={this.state.formIdValue} />
                     <Input type="text" value={this.state.formLoginValue} onChange={this.onChangeFormValue} label="Login" data-form-attr="formLoginValue"/>
                     <Input type="text" value={this.state.formEmailValue} onChange={this.onChangeFormValue} label="Email" data-form-attr="formEmailValue"/>
                     <Input type="text" value={this.state.formPasswordValue} onChange={this.onChangeFormValue} label="Password" data-form-attr="formPasswordValue"/>
