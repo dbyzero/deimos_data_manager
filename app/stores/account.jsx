@@ -2,6 +2,7 @@ var accountActions = require('../actions/account');
 
 var accountList = [];
 var accountListIndexedById = {};
+var accountListIndexedByLogin = {};
 
 var accountStore = Reflux.createStore({
 
@@ -11,6 +12,7 @@ var accountStore = Reflux.createStore({
         console.debug('accountStore#onGetSuccess', 'arguments:', arguments);
         accountList = returnedList;
         accountListIndexedById = _.indexBy(returnedList, "id");
+        accountListIndexedByLogin = _.indexBy(returnedList, "login");
         this.trigger(accountList);
     },
 
@@ -24,6 +26,10 @@ var accountStore = Reflux.createStore({
 
     getById: function (id) {
         return accountListIndexedById[id];
+    },
+
+    getByLogin: function (login) {
+        return accountListIndexedByLogin[login];
     }
 
 });

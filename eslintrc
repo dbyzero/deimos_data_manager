@@ -12,7 +12,8 @@
         "$": true, //JQuery
         "jQuery": true,
         "_": true,
-        "ReactBootstrap": true
+        "ReactBootstrap": true,
+        "JSONEditor": true
     },
 
     "ecmaFeatures": {

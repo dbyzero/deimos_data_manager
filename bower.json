@@ -24,7 +24,8 @@
     "reflux": "~0.2.13",
     "lodash": "~3.10.1",
     "react-bootstrap": "~0.26.2",
-    "bootstrap": "~3.3.5"
+    "bootstrap": "~3.3.5",
+    "jsoneditor": "~4.2.1"
   },
   "overrides": {
     "react-form-generator": {

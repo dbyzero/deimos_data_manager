@@ -6,7 +6,6 @@ var Button = ReactBootstrap.Button;
 var ButtonToolbar = ReactBootstrap.ButtonToolbar;
 var Table = ReactBootstrap.Table;
 var Modal = ReactBootstrap.Modal;
-var Input = ReactBootstrap.Input;
 
 var Session = React.createClass({
 

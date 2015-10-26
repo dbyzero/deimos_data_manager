@@ -118,10 +118,6 @@ var Account = React.createClass({
         this.setState(newStatus);
     },
 
-    unselectAccount: function () {
-        this.setState({"accountSelected": null});
-    },
-
     deleteAccount: function () {
         accountActions.delete(this.state.formIdValue);
         this.hideDeletePopup();
