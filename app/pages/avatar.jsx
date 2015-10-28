@@ -20,7 +20,6 @@ var Account = React.createClass({
             avatarStore: [],
             editPopupShown: false,
             deletePopupShown: false,
-            inventoryPopupShown: false,
             jsonEditorPopupShown: false,
             jsonEditor: null,
             jsonEditorFieldEdited: null,
@@ -83,7 +82,7 @@ var Account = React.createClass({
                   </Modal.Header>
                   <Modal.Body>
                     <Row className="show-grid">
-                        <Col xs={12} sm={6}><Input bsSize="small" addonBefore="Login" type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} data-form-attr="name"/></Col>
+                        <Col xs={12} sm={6}><Input bsSize="small" addonBefore="Name" type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} data-form-attr="name"/></Col>
                         <Col xs={12} sm={6}><Input bsSize="small" addonBefore="Account" type="text" value={this.state.formData.account_name} onChange={this.onChangeFormValue} data-form-attr="account_name"/></Col>
                     </Row>
                     <Row className="show-grid">
@@ -95,8 +94,8 @@ var Account = React.createClass({
                         <Col xs={12} sm={6}><Input bsSize="small" addonBefore="Color" addonAfter={this.state.formData.rgba} type="color" value={this.state.formData.rgba} onChange={this.onChangeFormValue} data-form-attr="rgba"/></Col>
                     </Row>
                     <Row className="show-grid">
-                        <Col xs={12} sm={4}><Input bsSize="small" addonBefore="Jump Speed" type="text" value={this.state.formData.jump_speed} onChange={this.onChangeFormValue}/></Col>
-                        <Col xs={12} sm={4}><Input bsSize="small" addonBefore="Move Speed" type="text" value={this.state.formData.move_speed} onChange={this.onChangeFormValue}/></Col>
+                        <Col xs={12} sm={4}><Input bsSize="small" addonBefore="Jump Speed" type="text" value={this.state.formData.jump_speed} onChange={this.onChangeFormValue} data-form-attr="jump_speed"/></Col>
+                        <Col xs={12} sm={4}><Input bsSize="small" addonBefore="Move Speed" type="text" value={this.state.formData.move_speed} onChange={this.onChangeFormValue} data-form-attr="move_speed"/></Col>
                         <Col xs={12} sm={4}><Input bsSize="small" addonBefore="Mass" type="text" value={this.state.formData.mass} onChange={this.onChangeFormValue} data-form-attr="mass"/></Col>
                     </Row>
                     <Row className="show-grid">
@@ -110,25 +109,12 @@ var Account = React.createClass({
                         <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Foot" buttonAfter={createJsonEditButton("item_slot_foot")} type="text" value={JSON.stringify(this.state.formData.item_slot_foot)}/></Col>
                         <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Left Hand" buttonAfter={createJsonEditButton("item_slot_left_hand")} type="text" value={JSON.stringify(this.state.formData.item_slot_left_hand)}/></Col>
                         <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Right Hand" buttonAfter={createJsonEditButton("item_slot_right_hand")} type="text" value={JSON.stringify(this.state.formData.item_slot_right_hand)}/></Col>
+                        <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Inventory" buttonAfter={createJsonEditButton("inventory")} type="text" value={JSON.stringify(this.state.formData.inventory)}/></Col>
                     </Row>
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button onClick={this.showInventoryPopup} bsStyle="primary">Inventory</Button>
                     <Button onClick={this.hideEditPopup}>Cancel</Button>
-                    <Button onClick={this.saveAvatar}>Save</Button>
-                  </Modal.Footer>
-                </Modal>
-
-                {/* Inventory Popup */}
-                <Modal show={this.state.inventoryPopupShown} onHide={this.hideInventoryPopup}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Inventory of {this.state.formData.name} (ID:{this.state.formData.id || "n/a"})</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <Input bsSize="small" addonBefore="Inventory" data-type="json" type="textarea" value={JSON.stringify(this.state.formData.inventory)} onChange={this.onChangeFormValue} data-form-attr="inventory" />
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button onClick={this.hideInventoryPopup} bsStyle="primary">Close</Button>
+                    <Button onClick={this.saveAvatar} bsStyle="success">Save</Button>
                   </Modal.Footer>
                 </Modal>
 
@@ -238,12 +224,6 @@ var Account = React.createClass({
         });
     },
 
-    showInventoryPopup: function (e) {
-        this.setState({
-            'inventoryPopupShown': true
-        });
-    },
-
     showJsonEditorPopup: function (field) {
         this.setState({
             'jsonEditorPopupShown': true
@@ -267,12 +247,6 @@ var Account = React.createClass({
             'jsonEditor': null,
             'jsonEditorFieldEdited': null,
             'formData': formData
-        });
-    },
-
-    hideInventoryPopup: function (e) {
-        this.setState({
-            'inventoryPopupShown': false
         });
     },
 
