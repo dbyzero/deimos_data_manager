@@ -10,6 +10,10 @@ var Skills = require('./pages/skill');
 var Effects = require('./pages/effect');
 var ItemTemplates = require('./pages/itemtemplate');
 var MonsterTemplates = require('./pages/monstertemplate');
+var PetTemplates = require('./pages/pettemplate');
+var PulseZoneTemplates = require('./pages/pulsezonetemplate');
+var RectangleZoneTemplates = require('./pages/rectanglezonetemplate');
+var AuraZoneTemplates = require('./pages/aurazonetemplate');
 
 module.exports = (
     <Route handler={Main} path="/">
@@ -23,6 +27,10 @@ module.exports = (
         <Route path="templates">
             <Route handler={ItemTemplates} path="item"></Route>
             <Route handler={MonsterTemplates} path="monster"></Route>
+            <Route handler={PetTemplates} path="pet"></Route>
+            <Route handler={PulseZoneTemplates} path="pulsezone"></Route>
+            <Route handler={RectangleZoneTemplates} path="rectanglezone"></Route>
+            <Route handler={AuraZoneTemplates} path="aurazone"></Route>
         </Route>
     </Route>
 );

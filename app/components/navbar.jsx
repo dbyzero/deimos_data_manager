@@ -19,13 +19,13 @@ var NavBarComponent = React.createClass({
               <NavItem eventKey={6} href="/#/effects">Effects</NavItem>
               <NavDropdown eventKey={7} title="Templates" id="basic-nav-dropdown">
                 <MenuItem eventKey="1" href="/#/templates/monster">Monster Templates</MenuItem>
-                <MenuItem eventKey="2">Pet Templates</MenuItem>
+                <MenuItem eventKey="2" href="/#/templates/pet">Pet Templates</MenuItem>
                 <MenuItem divider />
                 <MenuItem eventKey="3" href="/#/templates/item">Item Templates</MenuItem>
                 <MenuItem divider />
-                <MenuItem eventKey="4">PulseZone templates</MenuItem>
-                <MenuItem eventKey="5">AuraZone templates</MenuItem>
-                <MenuItem eventKey="6">RectangleZone templates</MenuItem>
+                <MenuItem eventKey="4" href="/#/templates/pulsezone">PulseZone templates</MenuItem>
+                <MenuItem eventKey="5" href="/#/templates/aurazone">AuraZone templates</MenuItem>
+                <MenuItem eventKey="6" href="/#/templates/rectanglezone">RectangleZone templates</MenuItem>
               </NavDropdown>
             </Nav>
           </Navbar>
