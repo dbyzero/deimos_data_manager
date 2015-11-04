@@ -113,9 +113,9 @@ var RectangleZone = React.createClass({
 
     saveRectangleZone: function () {
         if (this.state.formIsNew) {
-            rectanglezonetemplateActions.add(this.formData);
+            rectanglezonetemplateActions.add(this.state.formData);
         } else {
-            rectanglezonetemplateActions.post(this.formData);
+            rectanglezonetemplateActions.post(this.state.formData);
         }
         this.hideEditPopup();
     },

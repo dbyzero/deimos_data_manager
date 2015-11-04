@@ -113,9 +113,9 @@ var AuraZone = React.createClass({
 
     saveAuraZone: function () {
         if (this.state.formIsNew) {
-            aurazonetemplateActions.add(this.formData);
+            aurazonetemplateActions.add(this.state.formData);
         } else {
-            aurazonetemplateActions.post(this.formData);
+            aurazonetemplateActions.post(this.state.formData);
         }
         this.hideEditPopup();
     },

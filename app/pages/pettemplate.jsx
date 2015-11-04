@@ -113,9 +113,9 @@ var Pets = React.createClass({
 
     savePets: function () {
         if (this.state.formIsNew) {
-            pettemplateActions.add(this.formData);
+            pettemplateActions.add(this.state.formData);
         } else {
-            pettemplateActions.post(this.formData);
+            pettemplateActions.post(this.state.formData);
         }
         this.hideEditPopup();
     },

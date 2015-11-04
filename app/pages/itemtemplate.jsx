@@ -70,12 +70,12 @@ var Items = React.createClass({
                     <Modal.Title>{this.state.formIsNew ? "Create" : "Edit"} itemtemplate {this.state.formData.name} (ID:{this.state.formData.id || "n/a"})</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                    <Input type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} label="Name" data-form-attr="formData.name"/>
-                    <Input type="text" value={this.state.formData.skin} onChange={this.onChangeFormValue} label="Skin" data-form-attr="formData.skin"/>
-                    <Input type="text" value={this.state.formData.slot} onChange={this.onChangeFormValue} label="Slot" data-form-attr="formData.slot"/>
+                    <Input type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} label="Name" data-form-attr="name"/>
+                    <Input type="text" value={this.state.formData.skin} onChange={this.onChangeFormValue} label="Skin" data-form-attr="skin"/>
+                    <Input type="text" value={this.state.formData.slot} onChange={this.onChangeFormValue} label="Slot" data-form-attr="slot"/>
                     <Input type="text" onClick={function () {
                         this.showJsonEditorPopup('skills');
-                    }.bind(this)} readOnly value={JSON.stringify(this.state.formData.skills)} data-type="json" onChange={this.onChangeFormValue} label="Skills" data-form-attr="formData.skills"/>
+                    }.bind(this)} readOnly value={JSON.stringify(this.state.formData.skills)} data-type="json" onChange={this.onChangeFormValue} label="Skills" data-form-attr="skills"/>
                   </Modal.Body>
                   <Modal.Footer>
                     <Button onClick={this.hideEditPopup}>Cancel</Button>
@@ -126,9 +126,9 @@ var Items = React.createClass({
 
     saveItems: function () {
         if (this.state.formIsNew) {
-            itemtemplateActions.add(this.formData);
+            itemtemplateActions.add(this.state.formData);
         } else {
-            itemtemplateActions.post(this.formData);
+            itemtemplateActions.post(this.state.formData);
         }
         this.hideEditPopup();
     },

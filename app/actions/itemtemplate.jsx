@@ -32,7 +32,7 @@ itemtemplateActions.delete.listen(function (id) {
     $.ajax({
         contentType: 'text/plain',
         method: 'DELETE',
-        url: env.apiURL + '/itemtemplate/del/' + id,
+        url: env.apiURL + '/itemtemplate/' + id,
         crossDomain: true,
         success: function () {
             itemtemplateActions.deleteSuccess(id);
@@ -64,7 +64,7 @@ itemtemplateActions.add.listen(function (data) {
     console.debug('itemtemplateActions#post', 'arguments:', arguments);
     $.ajax({
         method: 'POST',
-        url: env.apiURL + '/itemtemplate/create/' + data.login + '/' + data.password + '/' + data.mail,
+        url: env.apiURL + '/itemtemplate/create/' + data.name,
         data: data,
         dataType: 'json',
         crossDomain: true,

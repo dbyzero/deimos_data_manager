@@ -113,9 +113,9 @@ var Monsters = React.createClass({
 
     saveMonsters: function () {
         if (this.state.formIsNew) {
-            monstertemplateActions.add(this.formData);
+            monstertemplateActions.add(this.state.formData);
         } else {
-            monstertemplateActions.post(this.formData);
+            monstertemplateActions.post(this.state.formData);
         }
         this.hideEditPopup();
     },

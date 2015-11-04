@@ -113,9 +113,9 @@ var PulseZone = React.createClass({
 
     savePulseZone: function () {
         if (this.state.formIsNew) {
-            pulsezonetemplateActions.add(this.formData);
+            pulsezonetemplateActions.add(this.state.formData);
         } else {
-            pulsezonetemplateActions.post(this.formData);
+            pulsezonetemplateActions.post(this.state.formData);
         }
         this.hideEditPopup();
     },
