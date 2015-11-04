@@ -1,2 +1,10 @@
-body {
+.gamearea-gamelevel-editor-popup {
+    min-height: 95%;
+    width: 95%;
+}
+
+.gamearea-gamelevel-editor-container {
+  margin-top:15px;
+    height: 600px;
+    overflow: scroll;
 }

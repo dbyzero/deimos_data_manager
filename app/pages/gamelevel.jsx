@@ -1,8 +1,10 @@
 var gamelevelActions = require('../actions/gamelevel');
 var gamelevelStore = require('../stores/gamelevel');
 
+var GameAreaEditor = require('../components/gameAreaEditor');
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Button = ReactBootstrap.Button;
+var ButtonGroup = ReactBootstrap.ButtonGroup;
 var ButtonToolbar = ReactBootstrap.ButtonToolbar;
 var Table = ReactBootstrap.Table;
 var Modal = ReactBootstrap.Modal;
@@ -17,6 +19,7 @@ var Gamelevel = React.createClass({
             gamelevelStore: [],
             editPopupShown: false,
             deletePopupShown: false,
+            gameeditorPopupShown: false,
             formData: {},
             formIsNew: false
         };
@@ -38,7 +41,9 @@ var Gamelevel = React.createClass({
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Content</th>
+                            <th>Width</th>
+                            <th>Height</th>
+                            <th>Blocks</th>
                             <th>Regex URL</th>
                             <th>Area DOM ID</th>
                             <th>Actions</th>
@@ -63,19 +68,39 @@ var Gamelevel = React.createClass({
                 </Modal>
 
                 {/* Edit Popup */}
-                <Modal show={this.state.editPopupShown} onHide={this.hideEditPopup}>
+                <Modal show={this.state.editPopupShown} onHide={this.hideEditPopup} bsSize="large">
                   <Modal.Header closeButton>
                     <Modal.Title>{this.state.formIsNew ? "Create" : "Edit"} gamelevel {this.state.formData.name} (ID:{this.state.formData.id || "n/a"})</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                     <Input type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} label="Name" data-form-attr="name"/>
-                    <Input type="textarea" value={JSON.stringify(this.state.formData.content)} style={{'minHeight': '400px'}} onChange={this.onChangeFormValue} label="Content" data-form-attr="content"/>
+                    <Input type="textarea" value={JSON.stringify(this.state.formData.blocks)} onClick={this.showGameeditorPopup} style={{'minHeight': '200px'}} onChange={this.onChangeFormValue} label="Blocks" data-form-attr="blocks"/>
+                    <Input type="text" value={this.state.formData.width} onChange={this.onChangeFormValue} label="Width" data-form-attr="width"/>
+                    <Input type="text" value={this.state.formData.height} onChange={this.onChangeFormValue} label="Height" data-form-attr="height"/>
                     <Input type="text" value={this.state.formData.regexUrl} onChange={this.onChangeFormValue} label="Regex URL" data-form-attr="regexUrl"/>
                     <Input type="text" value={this.state.formData.areaDomID} onChange={this.onChangeFormValue} label="Area DOM ID" data-form-attr="areaDomID"/>
                   </Modal.Body>
                   <Modal.Footer>
                     <Button onClick={this.hideEditPopup}>Cancel</Button>
-                    <Button onClick={this.saveGamelevel}>Save</Button>
+                    <Button onClick={this.saveGamelevel} bsStyle="primary">Save</Button>
+                  </Modal.Footer>
+                </Modal>
+
+                {/* Game Editor */}
+                <Modal show={this.state.gameeditorPopupShown} onHide={this.hideGameeditorPopup} dialogClassName="gamearea-gamelevel-editor-popup">
+                  <Modal.Header closeButton>
+                    <Modal.Title>Game Editor</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <GameAreaEditor
+                        width={this.state.formData.width}
+                        height={this.state.formData.height}
+                        initialBlocks={this.state.formData.blocks}
+                        onChange={this.onBlocksChange}
+                    />
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button onClick={this.hideGameeditorPopup} bsStyle="default">Close</Button>
                   </Modal.Footer>
                 </Modal>
             </div>
@@ -96,17 +121,30 @@ var Gamelevel = React.createClass({
             <tr key={dataRow.id}>
                 <td>{dataRow.id}</td>
                 <td>{dataRow.name}</td>
-                <td><Input type="textarea" value={JSON.stringify(dataRow.content)} readOnly/></td>
+                <td>{dataRow.width}</td>
+                <td>{dataRow.height}</td>
+                <td><Input type="textarea" value={JSON.stringify(dataRow.blocks)} readOnly data-id={dataRow.id} onClick={function (e) {
+                    this.showEditPopup(e);
+                    this.showGameeditorPopup(e);
+                }.bind(this)}/></td>
                 <td>{dataRow.regexUrl}</td>
                 <td>{dataRow.areaDomID}</td>
                 <td>
                   <ButtonToolbar>
-                    <Button bsStyle="primary" onClick={this.showEditPopup} data-id={dataRow.id}><Glyphicon glyph="edit" /></Button>
-                    <Button bsStyle="primary" onClick={this.showDeletePopup} data-id={dataRow.id}><Glyphicon glyph="trash" /></Button>
+                      <Button bsStyle="primary" onClick={this.showEditPopup} data-id={dataRow.id}><Glyphicon glyph="edit" /></Button>
+                      <Button bsStyle="primary" onClick={this.showDeletePopup} data-id={dataRow.id}><Glyphicon glyph="trash" /></Button>
                   </ButtonToolbar>
               </td>
             </tr>
         );
+    },
+
+    onBlocksChange: function (blocks) {
+        var formData = this.state.formData;
+        formData.blocks = blocks;
+        this.setState({
+            'formData': formData
+        });
     },
 
     onChangeFormValue: function (e) {
@@ -132,7 +170,9 @@ var Gamelevel = React.createClass({
         var data = {
             id: this.state.formData.id,
             name: this.state.formData.name,
-            content: this.state.formData.content,
+            width: this.state.formData.width,
+            height: this.state.formData.height,
+            blocks: this.state.formData.blocks,
             regexUrl: this.state.formData.regexUrl,
             areaDomID: this.state.formData.areaDomID
         };
@@ -178,6 +218,12 @@ var Gamelevel = React.createClass({
         });
     },
 
+    showGameeditorPopup: function (e) {
+        this.setState({
+            'gameeditorPopupShown': true
+        });
+    },
+
     hideEditPopup: function () {
         this.setState({'editPopupShown': false});
         this.resetFormValue();
@@ -186,6 +232,10 @@ var Gamelevel = React.createClass({
     hideDeletePopup: function () {
         this.setState({'deletePopupShown': false});
         this.resetFormValue();
+    },
+
+    hideGameeditorPopup: function () {
+        this.setState({'gameeditorPopupShown': false});
     }
 });
 
