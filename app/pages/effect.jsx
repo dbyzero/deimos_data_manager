@@ -1,5 +1,5 @@
-var accountActions = require('../actions/account');
-var accountStore = require('../stores/account');
+var effectActions = require('../actions/effect');
+var effectStore = require('../stores/effect');
 
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Button = ReactBootstrap.Button;
@@ -8,42 +8,35 @@ var Table = ReactBootstrap.Table;
 var Modal = ReactBootstrap.Modal;
 var Input = ReactBootstrap.Input;
 
-var Account = React.createClass({
+var Effect = React.createClass({
 
-    mixins: [Reflux.connect(accountStore, "accountStore")],
+    mixins: [Reflux.connect(effectStore, "effectStore")],
 
     getInitialState: function () {
         return {
-            accountStore: [],
+            effectStore: [],
             editPopupShown: false,
             deletePopupShown: false,
-            formIdValue: null,
-            formLoginValue: null,
-            formPasswordValue: null,
-            formEmailValue: null,
-            formIsNew: false
+            formData: {}
         };
     },
 
     componentWillMount: function () {
-        accountActions.get();
+        effectActions.get();
     },
 
     render: function () {
         return (
             <div>
                 <h1>
-                    Accounts&nbsp;
+                    Effects&nbsp;
                     <Button bsStyle="primary" onClick={this.showAddPopup}><Glyphicon glyph="plus" /></Button>
                 </h1>
                 <Table striped hover>
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Login</th>
-                            <th>Password</th>
-                            <th>Used by session</th>
-                            <th>Mail</th>
+                            <th>Name</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -54,30 +47,28 @@ var Account = React.createClass({
                 {/* Delete Popup */}
                 <Modal show={this.state.deletePopupShown} onHide={this.hideDeletePopup}>
                   <Modal.Header closeButton>
-                    <Modal.Title>Delete account {this.state.formLoginValue} (ID:{this.state.formIdValue})</Modal.Title>
+                    <Modal.Title>Delete effect {this.state.formData.name} (ID:{this.state.formData.id})</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                      Do you really want to delete account {this.state.formLoginValue} ?
+                      Do you really want to delete effect {this.state.formData.name} ?
                   </Modal.Body>
                   <Modal.Footer>
                     <Button onClick={this.hideDeletePopup}>No</Button>
-                    <Button onClick={this.deleteAccount} bsStyle="danger">Yes</Button>
+                    <Button onClick={this.deleteEffect} bsStyle="danger">Yes</Button>
                   </Modal.Footer>
                 </Modal>
 
                 {/* Edit Popup */}
                 <Modal show={this.state.editPopupShown} onHide={this.hideEditPopup}>
                   <Modal.Header closeButton>
-                    <Modal.Title>{this.state.formIsNew ? "Create" : "Edit"} account {this.state.formLoginValue} (ID:{this.state.formIdValue || "n/a"})</Modal.Title>
+                    <Modal.Title>{this.state.formIsNew ? "Create" : "Edit"} effect {this.state.formData.name} (ID:{this.state.formData.id || "n/a"})</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                    <Input type="text" value={this.state.formLoginValue} onChange={this.onChangeFormValue} label="Login" data-form-attr="formLoginValue"/>
-                    <Input type="text" value={this.state.formEmailValue} onChange={this.onChangeFormValue} label="Email" data-form-attr="formEmailValue"/>
-                    <Input type="text" value={this.state.formPasswordValue} onChange={this.onChangeFormValue} label="Password" data-form-attr="formPasswordValue"/>
+                    <Input type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} label="Name" data-form-attr="formData.name"/>
                   </Modal.Body>
                   <Modal.Footer>
                     <Button onClick={this.hideEditPopup}>Cancel</Button>
-                    <Button onClick={this.saveAccount}>Save</Button>
+                    <Button onClick={this.saveEffect}>Save</Button>
                   </Modal.Footer>
                 </Modal>
             </div>
@@ -85,7 +76,7 @@ var Account = React.createClass({
     },
 
     renderRows: function () {
-        var dataRows = this.state.accountStore;
+        var dataRows = this.state.effectStore;
         var rows = [];
         for (var i = 0; i < dataRows.length; i++) {
             rows.push(this.renderRow(dataRows[i]));
@@ -97,10 +88,7 @@ var Account = React.createClass({
         return (
             <tr key={dataRow.id}>
                 <td>{dataRow.id}</td>
-                <td>{dataRow.login}</td>
-                <td>{dataRow.password}</td>
-                <td>{dataRow.usedBySession}</td>
-                <td>{dataRow.mail}</td>
+                <td>{dataRow.name}</td>
                 <td>
                   <ButtonToolbar>
                     <Button bsStyle="primary" onClick={this.showEditPopup} data-id={dataRow.id}><Glyphicon glyph="edit" /></Button>
@@ -113,75 +101,55 @@ var Account = React.createClass({
 
     onChangeFormValue: function (e) {
         var domField = e.currentTarget;
-        var newStatus = {};
-        newStatus[domField.dataset.formAttr] = domField.value;
-        this.setState(newStatus);
+        var newFormData = this.state.formData;
+        newFormData[domField.dataset.formAttr] = domField.value;
+        this.setState({'formData': newFormData});
     },
 
-    deleteAccount: function () {
-        accountActions.delete(this.state.formIdValue);
+    deleteEffect: function () {
+        effectActions.delete(this.state.formData.id);
         this.hideDeletePopup();
     },
 
-    saveAccount: function () {
-        var data = {
-            id: this.state.formIdValue,
-            login: this.state.formLoginValue,
-            mail: this.state.formEmailValue,
-            password: this.state.formPasswordValue
-        };
-
+    saveEffect: function () {
         if (this.state.formIsNew) {
-            accountActions.add(data);
+            effectActions.add(this.formData);
         } else {
-            accountActions.post(data);
+            effectActions.post(this.formData);
         }
         this.hideEditPopup();
     },
 
     resetFormValue: function () {
         this.setState({
-            'formIdValue': null,
-            'formLoginValue': null,
-            'formPasswordValue': null,
-            'formEmailValue': null,
-            'formIsNew': true
+            'formData': {}
         });
     },
 
     showAddPopup: function () {
         this.setState({
+            'formIsNew': true,
             'editPopupShown': true,
-            'formIdValue': null,
-            'formLoginValue': null,
-            'formPasswordValue': null,
-            'formEmailValue': null,
-            'formIsNew': true
+            'formData': {}
         });
     },
 
     showEditPopup: function (e) {
         var id = parseInt(e.currentTarget.dataset.id);
-        var accountToEdit = accountStore.getById(id);
+        var effectToEdit = _.clone(effectStore.getById(id));
         this.setState({
             'editPopupShown': true,
-            'formIdValue': id,
-            'formLoginValue': accountToEdit.login,
-            'formPasswordValue': accountToEdit.password,
-            'formEmailValue': accountToEdit.mail,
+            'formData': effectToEdit,
             'formIsNew': false
         });
     },
 
     showDeletePopup: function (e) {
         var id = parseInt(e.currentTarget.dataset.id);
-        var accountToDelete = accountStore.getById(id);
+        var effectToDelete = _.clone(effectStore.getById(id));
         this.setState({
             'deletePopupShown': true,
-            'formIdValue': id,
-            'formLoginValue': accountToDelete.login,
-            'formPasswordValue': accountToDelete.password,
-            'formEmailValue': accountToDelete.mail
+            'formData': effectToDelete
         });
     },
 
@@ -196,4 +164,4 @@ var Account = React.createClass({
     }
 });
 
-module.exports = Account;
+module.exports = Effect;

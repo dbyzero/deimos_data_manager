@@ -16,12 +16,12 @@ var NavBarComponent = React.createClass({
               <NavItem eventKey={3} href="/#/avatars">Avatars</NavItem>
               <NavItem eventKey={4} href="/#/gamelevels">GameLevels</NavItem>
               <NavItem eventKey={5} href="/#/skills">Skills</NavItem>
-              <NavItem eventKey={6} href="/#/effectes">Effects</NavItem>
+              <NavItem eventKey={6} href="/#/effects">Effects</NavItem>
               <NavDropdown eventKey={7} title="Templates" id="basic-nav-dropdown">
-                <MenuItem eventKey="1">Monster Templates</MenuItem>
+                <MenuItem eventKey="1" href="/#/templates/monster">Monster Templates</MenuItem>
                 <MenuItem eventKey="2">Pet Templates</MenuItem>
                 <MenuItem divider />
-                <MenuItem eventKey="3">Item Templates</MenuItem>
+                <MenuItem eventKey="3" href="/#/templates/item">Item Templates</MenuItem>
                 <MenuItem divider />
                 <MenuItem eventKey="4">PulseZone templates</MenuItem>
                 <MenuItem eventKey="5">AuraZone templates</MenuItem>

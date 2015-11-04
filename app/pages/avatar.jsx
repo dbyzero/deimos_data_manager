@@ -3,7 +3,6 @@ var avatarStore = require('../stores/avatar');
 
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Button = ReactBootstrap.Button;
-var ButtonGroup = ReactBootstrap.ButtonGroup;
 var ButtonToolbar = ReactBootstrap.ButtonToolbar;
 var Table = ReactBootstrap.Table;
 var Modal = ReactBootstrap.Modal;
