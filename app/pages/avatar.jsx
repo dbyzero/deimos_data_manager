@@ -1,5 +1,6 @@
 var avatarActions = require('../actions/avatar');
 var avatarStore = require('../stores/avatar');
+var mixinJsonEditor = require('../mixins/mixinJsonEditor');
 
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Button = ReactBootstrap.Button;
@@ -13,16 +14,16 @@ var Col = ReactBootstrap.Col;
 
 var Account = React.createClass({
 
-    mixins: [Reflux.connect(avatarStore, "avatarStore")],
+    mixins: [
+        Reflux.connect(avatarStore, "avatarStore"),
+        mixinJsonEditor
+    ],
 
     getInitialState: function () {
         return {
             avatarStore: [],
             editPopupShown: false,
             deletePopupShown: false,
-            jsonEditorPopupShown: false,
-            jsonEditor: null,
-            jsonEditorFieldEdited: null,
             formIsNew: true,
             formData: {}
         };
@@ -118,19 +119,7 @@ var Account = React.createClass({
                   </Modal.Footer>
                 </Modal>
 
-                {/* Json Editor Popup */}
-                <Modal show={this.state.jsonEditorPopupShown} onHide={this.hideJsonEditorPopup}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Json Editor</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                      <div id="jsonEditorWorkspaceZone"></div>
-                  </Modal.Body>
-                  <Modal.Footer>
-                      <Button onClick={this.hideJsonEditorPopup}>Cancel</Button>
-                      <Button onClick={this.hideJsonEditorPopup} bsStyle="primary" onClick={this.saveJsonEditorData}>Save</Button>
-                  </Modal.Footer>
-                </Modal>
+                {this.renderJsonPopup()}
             </div>
         );
     },
@@ -162,19 +151,9 @@ var Account = React.createClass({
         );
     },
 
-    onChangeFormValue: function (e) {
-        var domField = e.currentTarget;
-        var newFormData = this.state.formData;
-        var fieldType = domField.dataset.type;
-        switch (fieldType) {
-        case "json" :
-            newFormData[domField.dataset.formAttr] = JSON.parse(domField.value);
-            break;
-        default :
-            newFormData[domField.dataset.formAttr] = domField.value;
-        }
-        this.setState({'formData': newFormData});
-    },
+    //OVERRIDE BY MIXINS JSON EDITOR
+    // onChangeFormValue: function (e) {
+    // },
 
     deleteAvatar: function () {
         avatarActions.delete(this.state.formData.id);
@@ -221,38 +200,6 @@ var Account = React.createClass({
         this.setState({
             'deletePopupShown': true,
             'formData': _.clone(avatarToDelete)
-        });
-    },
-
-    showJsonEditorPopup: function (field) {
-        this.setState({
-            'jsonEditorPopupShown': true
-        }, function () {
-            this.setState({
-                'jsonEditor': new JSONEditor(document.getElementById('jsonEditorWorkspaceZone')),
-                'jsonEditorFieldEdited': field
-            },
-            function () {
-                this.state.jsonEditor.set(this.state.formData[field] || {});
-            });
-        });
-    },
-
-    saveJsonEditorData: function () {
-        var newValue = this.state.jsonEditor.get();
-        var formData = this.state.formData;
-        formData[this.state.jsonEditorFieldEdited] = newValue;
-        this.setState({
-            'jsonEditorPopupShown': false,
-            'jsonEditor': null,
-            'jsonEditorFieldEdited': null,
-            'formData': formData
-        });
-    },
-
-    hideJsonEditorPopup: function (e) {
-        this.setState({
-            'jsonEditorPopupShown': false
         });
     },
 

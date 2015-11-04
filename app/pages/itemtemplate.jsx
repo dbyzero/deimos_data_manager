@@ -1,5 +1,6 @@
 var itemtemplateActions = require('../actions/itemtemplate');
 var itemtemplateStore = require('../stores/itemtemplate');
+var mixinJsonEditor = require('../mixins/mixinJsonEditor');
 
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Button = ReactBootstrap.Button;
@@ -10,7 +11,10 @@ var Input = ReactBootstrap.Input;
 
 var Items = React.createClass({
 
-    mixins: [Reflux.connect(itemtemplateStore, "itemtemplateStore")],
+    mixins: [
+        Reflux.connect(itemtemplateStore, "itemtemplateStore"),
+        mixinJsonEditor
+    ],
 
     getInitialState: function () {
         return {
@@ -37,7 +41,9 @@ var Items = React.createClass({
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Actions</th>
+                            <th>Skin</th>
+                            <th>Slot</th>
+                            <th>Skills</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -65,12 +71,19 @@ var Items = React.createClass({
                   </Modal.Header>
                   <Modal.Body>
                     <Input type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} label="Name" data-form-attr="formData.name"/>
+                    <Input type="text" value={this.state.formData.skin} onChange={this.onChangeFormValue} label="Skin" data-form-attr="formData.skin"/>
+                    <Input type="text" value={this.state.formData.slot} onChange={this.onChangeFormValue} label="Slot" data-form-attr="formData.slot"/>
+                    <Input type="text" onClick={function () {
+                        this.showJsonEditorPopup('skills');
+                    }.bind(this)} readOnly value={JSON.stringify(this.state.formData.skills)} data-type="json" onChange={this.onChangeFormValue} label="Skills" data-form-attr="formData.skills"/>
                   </Modal.Body>
                   <Modal.Footer>
                     <Button onClick={this.hideEditPopup}>Cancel</Button>
                     <Button onClick={this.saveItems}>Save</Button>
                   </Modal.Footer>
                 </Modal>
+
+                {this.renderJsonPopup()}
             </div>
         );
     },
@@ -89,6 +102,9 @@ var Items = React.createClass({
             <tr key={dataRow.id}>
                 <td>{dataRow.id}</td>
                 <td>{dataRow.name}</td>
+                <td>{dataRow.skin}</td>
+                <td>{dataRow.slot}</td>
+                <td>{JSON.stringify(dataRow.skills)}</td>
                 <td>
                   <ButtonToolbar>
                     <Button bsStyle="primary" onClick={this.showEditPopup} data-id={dataRow.id}><Glyphicon glyph="edit" /></Button>
@@ -99,12 +115,9 @@ var Items = React.createClass({
         );
     },
 
-    onChangeFormValue: function (e) {
-        var domField = e.currentTarget;
-        var newFormData = this.state.formData;
-        newFormData[domField.dataset.formAttr] = domField.value;
-        this.setState({'formData': newFormData});
-    },
+    // OVERRIDE BY MIXINS
+    // onChangeFormValue: function (e) {
+    // },
 
     deleteItems: function () {
         itemtemplateActions.delete(this.state.formData.id);
