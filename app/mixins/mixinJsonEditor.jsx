@@ -1,5 +1,6 @@
 var Button = ReactBootstrap.Button;
 var Modal = ReactBootstrap.Modal;
+var Input = ReactBootstrap.Input;
 
 module.exports = {
     getInitialState: function () {
@@ -32,6 +33,10 @@ module.exports = {
         case "json" :
             newFormData[domField.dataset.formAttr] = JSON.parse(domField.value);
             break;
+        case "checkbox" :
+            newFormData[domField.dataset.formAttr] = domField.checked;
+            break;
+        case "text" :
         default :
             newFormData[domField.dataset.formAttr] = domField.value;
         }
@@ -69,5 +74,19 @@ module.exports = {
               <Button onClick={this.hideJsonEditorPopup} bsStyle="primary" onClick={this.saveJsonEditorData}>Save</Button>
           </Modal.Footer>
         </Modal>);
+    },
+
+    renderJsonInput: function (field, label) {
+      return (<Input
+          type="text"
+          onClick={function () {
+            this.showJsonEditorPopup(field);
+          }.bind(this)}
+          value={JSON.stringify(this.state.formData[field])}
+          data-type="json" onChange={this.onChangeFormValue}
+          label={label}
+          data-form-attr={field}
+          readOnly
+      />);
     }
 }

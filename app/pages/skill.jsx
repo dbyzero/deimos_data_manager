@@ -1,5 +1,6 @@
 var skillActions = require('../actions/skill');
 var skillStore = require('../stores/skill');
+var mixinJsonEditor = require('../mixins/mixinJsonEditor');
 
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Button = ReactBootstrap.Button;
@@ -10,7 +11,10 @@ var Input = ReactBootstrap.Input;
 
 var Skill = React.createClass({
 
-    mixins: [Reflux.connect(skillStore, "skillStore")],
+    mixins: [
+        Reflux.connect(skillStore, "skillStore"),
+        mixinJsonEditor
+    ],
 
     getInitialState: function () {
         return {
@@ -37,7 +41,11 @@ var Skill = React.createClass({
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Actions</th>
+                            <th>Description</th>
+                            <th>Icon</th>
+                            <th>Replace Attack?</th>
+                            <th>Passive Effect</th>
+                            <th>On Activation</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,13 +72,19 @@ var Skill = React.createClass({
                     <Modal.Title>{this.state.formIsNew ? "Create" : "Edit"} skill {this.state.formData.name} (ID:{this.state.formData.id || "n/a"})</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                    <Input type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} label="Name" data-form-attr="formData.name"/>
+                    <Input type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} label="Name" data-form-attr="name"/>
+                    <Input type="text" value={this.state.formData.description} onChange={this.onChangeFormValue} label="Description" data-form-attr="description"/>
+                    <Input type="text" value={this.state.formData.icon} onChange={this.onChangeFormValue} label="Icon" data-form-attr="icon"/>
+                    <Input type="checkbox" data-type="checkbox" checked={this.state.formData.replaceAttack} onChange={this.onChangeFormValue} label="Replace Attack ?" data-form-attr="replaceAttack"/>
+                    {this.renderJsonInput("passiveEffect", "Passive Effect")}
+                    {this.renderJsonInput("onActivate", "On Activation")}
                   </Modal.Body>
                   <Modal.Footer>
                     <Button onClick={this.hideEditPopup}>Cancel</Button>
                     <Button onClick={this.saveSkill}>Save</Button>
                   </Modal.Footer>
                 </Modal>
+                {this.renderJsonPopup()}
             </div>
         );
     },
@@ -89,6 +103,11 @@ var Skill = React.createClass({
             <tr key={dataRow.id}>
                 <td>{dataRow.id}</td>
                 <td>{dataRow.name}</td>
+                <td>{dataRow.description}</td>
+                <td>{dataRow.icon}</td>
+                <td>{dataRow.replaceAttack ? 'Yes' : 'No'}</td>
+                <td>{JSON.stringify(dataRow.passiveEffect)}</td>
+                <td>{JSON.stringify(dataRow.onActivate)}</td>
                 <td>
                   <ButtonToolbar>
                     <Button bsStyle="primary" onClick={this.showEditPopup} data-id={dataRow.id}><Glyphicon glyph="edit" /></Button>
@@ -99,12 +118,9 @@ var Skill = React.createClass({
         );
     },
 
-    onChangeFormValue: function (e) {
-        var domField = e.currentTarget;
-        var newFormData = this.state.formData;
-        newFormData[domField.dataset.formAttr] = domField.value;
-        this.setState({'formData': newFormData});
-    },
+    //OVERRIDE BY MIXIN
+    // onChangeFormValue: function (e) {
+    // },
 
     deleteSkill: function () {
         skillActions.delete(this.state.formData.id);
@@ -113,9 +129,9 @@ var Skill = React.createClass({
 
     saveSkill: function () {
         if (this.state.formIsNew) {
-            skillActions.add(this.formData);
+            skillActions.add(this.state.formData);
         } else {
-            skillActions.post(this.formData);
+            skillActions.post(this.state.formData);
         }
         this.hideEditPopup();
     },

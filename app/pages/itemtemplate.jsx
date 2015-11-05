@@ -73,9 +73,7 @@ var Items = React.createClass({
                     <Input type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} label="Name" data-form-attr="name"/>
                     <Input type="text" value={this.state.formData.skin} onChange={this.onChangeFormValue} label="Skin" data-form-attr="skin"/>
                     <Input type="text" value={this.state.formData.slot} onChange={this.onChangeFormValue} label="Slot" data-form-attr="slot"/>
-                    <Input type="text" onClick={function () {
-                        this.showJsonEditorPopup('skills');
-                    }.bind(this)} readOnly value={JSON.stringify(this.state.formData.skills)} data-type="json" onChange={this.onChangeFormValue} label="Skills" data-form-attr="skills"/>
+                    {this.renderJsonInput("skills", "Skill")}
                   </Modal.Body>
                   <Modal.Footer>
                     <Button onClick={this.hideEditPopup}>Cancel</Button>

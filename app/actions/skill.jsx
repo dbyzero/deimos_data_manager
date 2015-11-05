@@ -32,7 +32,7 @@ skillActions.delete.listen(function (id) {
     $.ajax({
         contentType: 'text/plain',
         method: 'DELETE',
-        url: env.apiURL + '/skill/del/' + id,
+        url: env.apiURL + '/skill/' + id,
         crossDomain: true,
         success: function () {
             skillActions.deleteSuccess(id);
@@ -64,7 +64,7 @@ skillActions.add.listen(function (data) {
     console.debug('skillActions#post', 'arguments:', arguments);
     $.ajax({
         method: 'POST',
-        url: env.apiURL + '/skill/create/' + data.login + '/' + data.password + '/' + data.mail,
+        url: env.apiURL + '/skill/create/' + data.name,
         data: data,
         dataType: 'json',
         crossDomain: true,
