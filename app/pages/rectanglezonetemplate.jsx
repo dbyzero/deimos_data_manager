@@ -77,7 +77,6 @@ var RectangleZone = React.createClass({
                     <Input type="color" value={this.state.formData.color} onChange={this.onChangeFormValue} addonBefore="Color" data-form-attr="color"/>
                     {this.renderJsonInput('effects', 'Effects')}
                     <Input type="text" value={this.state.formData.applyEffectFrequency} onChange={this.onChangeFormValue} addonBefore="Apply Effect Frequency" data-form-attr="applyEffectFrequency"/>
-                    <Input type="text" value={this.state.formData.ownerId} onChange={this.onChangeFormValue} addonBefore="Owner ID" data-form-attr="ownerId"/>
                     <Input type="text" value={this.state.formData.width} onChange={this.onChangeFormValue} addonBefore="Width" data-form-attr="width"/>
                     <Input type="text" value={this.state.formData.height} onChange={this.onChangeFormValue} addonBefore="Height" data-form-attr="height"/>
                     <Input type="checkbox" data-type="checkbox" checked={this.state.formData.isSolid} onChange={this.onChangeFormValue} label="Is Solid" data-form-attr="isSolid"/>

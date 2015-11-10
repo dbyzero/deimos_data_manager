@@ -1,5 +1,6 @@
-var pulsezonetemplateActions = require('../actions/pulsezonetemplate');
-var pulsezonetemplateStore = require('../stores/pulsezonetemplate');
+var spherezonetemplateActions = require('../actions/spherezonetemplate');
+var spherezonetemplateStore = require('../stores/spherezonetemplate');
+var mixinJsonEditor = require('../mixins/mixinJsonEditor');
 
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Button = ReactBootstrap.Button;
@@ -8,13 +9,16 @@ var Table = ReactBootstrap.Table;
 var Modal = ReactBootstrap.Modal;
 var Input = ReactBootstrap.Input;
 
-var PulseZone = React.createClass({
+var SphereZone = React.createClass({
 
-    mixins: [Reflux.connect(pulsezonetemplateStore, "pulsezonetemplateStore")],
+    mixins: [
+      Reflux.connect(spherezonetemplateStore, "spherezonetemplateStore"),
+      mixinJsonEditor
+    ],
 
     getInitialState: function () {
         return {
-            pulsezonetemplateStore: [],
+            spherezonetemplateStore: [],
             editPopupShown: false,
             deletePopupShown: false,
             formData: {}
@@ -22,14 +26,14 @@ var PulseZone = React.createClass({
     },
 
     componentWillMount: function () {
-        pulsezonetemplateActions.get();
+        spherezonetemplateActions.get();
     },
 
     render: function () {
         return (
             <div>
                 <h1>
-                    Pulse Zones&nbsp;
+                    Sphere Zones&nbsp;
                     <Button bsStyle="primary" onClick={this.showAddPopup}><Glyphicon glyph="plus" /></Button>
                 </h1>
                 <Table striped hover>
@@ -37,6 +41,8 @@ var PulseZone = React.createClass({
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Description</th>
+                            <th>Skin</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -47,36 +53,46 @@ var PulseZone = React.createClass({
                 {/* Delete Popup */}
                 <Modal show={this.state.deletePopupShown} onHide={this.hideDeletePopup}>
                   <Modal.Header closeButton>
-                    <Modal.Title>Delete pulsezonetemplate {this.state.formData.name} (ID:{this.state.formData.id})</Modal.Title>
+                    <Modal.Title>Delete spherezonetemplate {this.state.formData.name} (ID:{this.state.formData.id})</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                      Do you really want to delete pulsezonetemplate {this.state.formData.name} ?
+                      Do you really want to delete spherezonetemplate {this.state.formData.name} ?
                   </Modal.Body>
                   <Modal.Footer>
                     <Button onClick={this.hideDeletePopup}>No</Button>
-                    <Button onClick={this.deletePulseZone} bsStyle="danger">Yes</Button>
+                    <Button onClick={this.deleteSphereZone} bsStyle="danger">Yes</Button>
                   </Modal.Footer>
                 </Modal>
 
                 {/* Edit Popup */}
                 <Modal show={this.state.editPopupShown} onHide={this.hideEditPopup}>
                   <Modal.Header closeButton>
-                    <Modal.Title>{this.state.formIsNew ? "Create" : "Edit"} pulsezonetemplate {this.state.formData.name} (ID:{this.state.formData.id || "n/a"})</Modal.Title>
+                    <Modal.Title>{this.state.formIsNew ? "Create" : "Edit"} spherezonetemplate {this.state.formData.name} (ID:{this.state.formData.id || "n/a"})</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                    <Input type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} label="Name" data-form-attr="formData.name"/>
+                    <Input type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} label="Name" data-form-attr="name"/>
+                    <Input type="textarea" value={this.state.formData.description} onChange={this.onChangeFormValue} label="Description" data-form-attr="description"/>
+                    <Input type="text" value={this.state.formData.duration} onChange={this.onChangeFormValue} addonBefore="Duration" data-form-attr="duration"/>
+                    <Input type="text" value={this.state.formData.skin} onChange={this.onChangeFormValue} addonBefore="Skin" data-form-attr="skin"/>
+                    <Input type="color" value={this.state.formData.color} onChange={this.onChangeFormValue} addonBefore="Color" data-form-attr="color"/>
+                    {this.renderJsonInput('effects', 'Effects')}
+                    <Input type="text" value={this.state.formData.applyEffectFrequency} onChange={this.onChangeFormValue} addonBefore="Apply Effect Frequency" data-form-attr="applyEffectFrequency"/>
+                    <Input type="text" value={this.state.formData.initialRadius} onChange={this.onChangeFormValue} addonBefore="Initial Radius" data-form-attr="initialRadius"/>
+                    <Input type="text" value={this.state.formData.growSpeed} onChange={this.onChangeFormValue} addonBefore="Grow Speed" data-form-attr="growSpeed"/>
                   </Modal.Body>
                   <Modal.Footer>
                     <Button onClick={this.hideEditPopup}>Cancel</Button>
-                    <Button onClick={this.savePulseZone}>Save</Button>
+                    <Button onClick={this.saveSphereZone}>Save</Button>
                   </Modal.Footer>
                 </Modal>
+
+                {this.renderJsonPopup()}
             </div>
         );
     },
 
     renderRows: function () {
-        var dataRows = this.state.pulsezonetemplateStore;
+        var dataRows = this.state.spherezonetemplateStore;
         var rows = [];
         for (var i = 0; i < dataRows.length; i++) {
             rows.push(this.renderRow(dataRows[i]));
@@ -89,6 +105,8 @@ var PulseZone = React.createClass({
             <tr key={dataRow.id}>
                 <td>{dataRow.id}</td>
                 <td>{dataRow.name}</td>
+                <td>{dataRow.description}</td>
+                <td>{dataRow.skin}</td>
                 <td>
                   <ButtonToolbar>
                     <Button bsStyle="primary" onClick={this.showEditPopup} data-id={dataRow.id}><Glyphicon glyph="edit" /></Button>
@@ -99,23 +117,23 @@ var PulseZone = React.createClass({
         );
     },
 
-    onChangeFormValue: function (e) {
-        var domField = e.currentTarget;
-        var newFormData = this.state.formData;
-        newFormData[domField.dataset.formAttr] = domField.value;
-        this.setState({'formData': newFormData});
-    },
+    // onChangeFormValue: function (e) {
+    //     var domField = e.currentTarget;
+    //     var newFormData = this.state.formData;
+    //     newFormData[domField.dataset.formAttr] = domField.value;
+    //     this.setState({'formData': newFormData});
+    // },
 
-    deletePulseZone: function () {
-        pulsezonetemplateActions.delete(this.state.formData.id);
+    deleteSphereZone: function () {
+        spherezonetemplateActions.delete(this.state.formData.id);
         this.hideDeletePopup();
     },
 
-    savePulseZone: function () {
+    saveSphereZone: function () {
         if (this.state.formIsNew) {
-            pulsezonetemplateActions.add(this.state.formData);
+            spherezonetemplateActions.add(this.state.formData);
         } else {
-            pulsezonetemplateActions.post(this.state.formData);
+            spherezonetemplateActions.post(this.state.formData);
         }
         this.hideEditPopup();
     },
@@ -136,20 +154,20 @@ var PulseZone = React.createClass({
 
     showEditPopup: function (e) {
         var id = parseInt(e.currentTarget.dataset.id);
-        var pulsezonetemplateToEdit = _.clone(pulsezonetemplateStore.getById(id));
+        var spherezonetemplateToEdit = _.clone(spherezonetemplateStore.getById(id));
         this.setState({
             'editPopupShown': true,
-            'formData': pulsezonetemplateToEdit,
+            'formData': spherezonetemplateToEdit,
             'formIsNew': false
         });
     },
 
     showDeletePopup: function (e) {
         var id = parseInt(e.currentTarget.dataset.id);
-        var pulsezonetemplateToDelete = _.clone(pulsezonetemplateStore.getById(id));
+        var spherezonetemplateToDelete = _.clone(spherezonetemplateStore.getById(id));
         this.setState({
             'deletePopupShown': true,
-            'formData': pulsezonetemplateToDelete
+            'formData': spherezonetemplateToDelete
         });
     },
 
@@ -164,4 +182,4 @@ var PulseZone = React.createClass({
     }
 });
 
-module.exports = PulseZone;
+module.exports = SphereZone;
