@@ -64,7 +64,7 @@ effectActions.add.listen(function (data) {
     console.debug('effectActions#post', 'arguments:', arguments);
     $.ajax({
         method: 'POST',
-        url: env.apiURL + '/effect/create/' + data.login + '/' + data.password + '/' + data.mail,
+        url: env.apiURL + '/effect/create/' + data.name,
         data: data,
         dataType: 'json',
         crossDomain: true,

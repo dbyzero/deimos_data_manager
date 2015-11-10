@@ -77,7 +77,7 @@ var Account = React.createClass({
                 </Modal>
 
                 {/* Edit Popup */}
-                <Modal show={this.state.editPopupShown} onHide={this.hideEditPopup}>
+                <Modal show={this.state.editPopupShown} onHide={this.hideEditPopup} bsSize="large">
                   <Modal.Header closeButton>
                     <Modal.Title>{this.state.formIsNew ? "Create" : "Edit"} avatar {this.state.formData.name} (ID:{this.state.formData.id || "n/a"})</Modal.Title>
                   </Modal.Header>
@@ -100,17 +100,17 @@ var Account = React.createClass({
                         <Col xs={12} sm={4}><Input bsSize="small" addonBefore="Mass" type="text" value={this.state.formData.mass} onChange={this.onChangeFormValue} data-form-attr="mass"/></Col>
                     </Row>
                     <Row className="show-grid">
-                        <Col xs={12} sm={6}><Input readOnly bsSize="small" addonBefore="Size" buttonAfter={createJsonEditButton("size")} data-type="json" type="text" value={JSON.stringify(this.state.formData.size)}/></Col>
-                        <Col xs={12} sm={6}><Input readOnly bsSize="small" addonBefore="Deltashow" buttonAfter={createJsonEditButton("deltashow")} data-type="json" type="text" value={JSON.stringify(this.state.formData.deltashow)}/></Col>
+                        <Col xs={12} sm={6}><Input readOnly bsSize="small" addonBefore="Size" buttonAfter={createJsonEditButton("size")} onChange={this.onChangeFormValue} data-type="json" type="text" value={JSON.stringify(this.state.formData.size)}/></Col>
+                        <Col xs={12} sm={6}><Input readOnly bsSize="small" addonBefore="Deltashow" buttonAfter={createJsonEditButton("deltashow")} onChange={this.onChangeFormValue} data-type="json" type="text" value={JSON.stringify(this.state.formData.deltashow)}/></Col>
                     </Row>
                     <Row className="show-grid">
-                        <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Head" buttonAfter={createJsonEditButton("item_slot_head")} type="text" value={JSON.stringify(this.state.formData.item_slot_head)}/></Col>
-                        <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Head 2" buttonAfter={createJsonEditButton("item_slot_head2")} type="text" value={JSON.stringify(this.state.formData.item_slot_head2)}/></Col>
-                        <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Chest" buttonAfter={createJsonEditButton("item_slot_chest")} type="text" value={JSON.stringify(this.state.formData.item_slot_chest)}/></Col>
-                        <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Foot" buttonAfter={createJsonEditButton("item_slot_foot")} type="text" value={JSON.stringify(this.state.formData.item_slot_foot)}/></Col>
-                        <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Left Hand" buttonAfter={createJsonEditButton("item_slot_left_hand")} type="text" value={JSON.stringify(this.state.formData.item_slot_left_hand)}/></Col>
-                        <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Right Hand" buttonAfter={createJsonEditButton("item_slot_right_hand")} type="text" value={JSON.stringify(this.state.formData.item_slot_right_hand)}/></Col>
-                        <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Inventory" buttonAfter={createJsonEditButton("inventory")} type="text" value={JSON.stringify(this.state.formData.inventory)}/></Col>
+                        <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Head" buttonAfter={createJsonEditButton("item_slot_head")} type="text" onChange={this.onChangeFormValue} value={JSON.stringify(this.state.formData.item_slot_head)}/></Col>
+                        <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Head 2" buttonAfter={createJsonEditButton("item_slot_head2")} type="text" onChange={this.onChangeFormValue} value={JSON.stringify(this.state.formData.item_slot_head2)}/></Col>
+                        <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Chest" buttonAfter={createJsonEditButton("item_slot_chest")} type="text" onChange={this.onChangeFormValue} value={JSON.stringify(this.state.formData.item_slot_chest)}/></Col>
+                        <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Foot" buttonAfter={createJsonEditButton("item_slot_foot")} type="text"onChange={this.onChangeFormValue}  value={JSON.stringify(this.state.formData.item_slot_foot)}/></Col>
+                        <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Left Hand" buttonAfter={createJsonEditButton("item_slot_left_hand")} type="text" onChange={this.onChangeFormValue} value={JSON.stringify(this.state.formData.item_slot_left_hand)}/></Col>
+                        <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Right Hand" buttonAfter={createJsonEditButton("item_slot_right_hand")} type="text" onChange={this.onChangeFormValue} value={JSON.stringify(this.state.formData.item_slot_right_hand)}/></Col>
+                        <Col xs={12} sm={12}><Input readOnly bsSize="small" addonBefore="Inventory" buttonAfter={createJsonEditButton("inventory")} type="text" onChange={this.onChangeFormValue} value={JSON.stringify(this.state.formData.inventory)}/></Col>
                     </Row>
                   </Modal.Body>
                   <Modal.Footer>

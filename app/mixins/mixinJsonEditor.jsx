@@ -77,16 +77,16 @@ module.exports = {
     },
 
     renderJsonInput: function (field, label) {
-      return (<Input
-          type="text"
-          onClick={function () {
-            this.showJsonEditorPopup(field);
-          }.bind(this)}
-          value={JSON.stringify(this.state.formData[field])}
-          data-type="json" onChange={this.onChangeFormValue}
-          label={label}
-          data-form-attr={field}
-          readOnly
-      />);
+        return (<Input
+            type="text"
+            onClick={function () {
+                this.showJsonEditorPopup(field);
+            }.bind(this)}
+            value={JSON.stringify(this.state.formData[field])}
+            data-type="json" onChange={this.onChangeFormValue}
+            label={label}
+            data-form-attr={field}
+            readOnly
+        />);
     }
-}
+};

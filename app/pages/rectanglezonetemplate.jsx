@@ -1,5 +1,6 @@
 var rectanglezonetemplateActions = require('../actions/rectanglezonetemplate');
 var rectanglezonetemplateStore = require('../stores/rectanglezonetemplate');
+var mixinJsonEditor = require('../mixins/mixinJsonEditor');
 
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Button = ReactBootstrap.Button;
@@ -10,7 +11,10 @@ var Input = ReactBootstrap.Input;
 
 var RectangleZone = React.createClass({
 
-    mixins: [Reflux.connect(rectanglezonetemplateStore, "rectanglezonetemplateStore")],
+    mixins: [
+      Reflux.connect(rectanglezonetemplateStore, "rectanglezonetemplateStore"),
+      mixinJsonEditor
+    ],
 
     getInitialState: function () {
         return {
@@ -37,6 +41,8 @@ var RectangleZone = React.createClass({
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Description</th>
+                            <th>Skin</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -64,13 +70,25 @@ var RectangleZone = React.createClass({
                     <Modal.Title>{this.state.formIsNew ? "Create" : "Edit"} rectanglezonetemplate {this.state.formData.name} (ID:{this.state.formData.id || "n/a"})</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                    <Input type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} label="Name" data-form-attr="formData.name"/>
+                    <Input type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} label="Name" data-form-attr="name"/>
+                    <Input type="textarea" value={this.state.formData.description} onChange={this.onChangeFormValue} label="Description" data-form-attr="description"/>
+                    <Input type="text" value={this.state.formData.duration} onChange={this.onChangeFormValue} addonBefore="Duration" data-form-attr="duration"/>
+                    <Input type="text" value={this.state.formData.skin} onChange={this.onChangeFormValue} addonBefore="Skin" data-form-attr="skin"/>
+                    <Input type="color" value={this.state.formData.color} onChange={this.onChangeFormValue} addonBefore="Color" data-form-attr="color"/>
+                    {this.renderJsonInput('effects', 'Effects')}
+                    <Input type="text" value={this.state.formData.applyEffectFrequency} onChange={this.onChangeFormValue} addonBefore="Apply Effect Frequency" data-form-attr="applyEffectFrequency"/>
+                    <Input type="text" value={this.state.formData.ownerId} onChange={this.onChangeFormValue} addonBefore="Owner ID" data-form-attr="ownerId"/>
+                    <Input type="text" value={this.state.formData.width} onChange={this.onChangeFormValue} addonBefore="Width" data-form-attr="width"/>
+                    <Input type="text" value={this.state.formData.height} onChange={this.onChangeFormValue} addonBefore="Height" data-form-attr="height"/>
+                    <Input type="checkbox" data-type="checkbox" checked={this.state.formData.isSolid} onChange={this.onChangeFormValue} label="Is Solid" data-form-attr="isSolid"/>
                   </Modal.Body>
                   <Modal.Footer>
                     <Button onClick={this.hideEditPopup}>Cancel</Button>
                     <Button onClick={this.saveRectangleZone}>Save</Button>
                   </Modal.Footer>
                 </Modal>
+
+                {this.renderJsonPopup()}
             </div>
         );
     },
@@ -89,6 +107,8 @@ var RectangleZone = React.createClass({
             <tr key={dataRow.id}>
                 <td>{dataRow.id}</td>
                 <td>{dataRow.name}</td>
+                <td>{dataRow.description}</td>
+                <td>{dataRow.skin}</td>
                 <td>
                   <ButtonToolbar>
                     <Button bsStyle="primary" onClick={this.showEditPopup} data-id={dataRow.id}><Glyphicon glyph="edit" /></Button>
@@ -99,12 +119,12 @@ var RectangleZone = React.createClass({
         );
     },
 
-    onChangeFormValue: function (e) {
-        var domField = e.currentTarget;
-        var newFormData = this.state.formData;
-        newFormData[domField.dataset.formAttr] = domField.value;
-        this.setState({'formData': newFormData});
-    },
+    // onChangeFormValue: function (e) {
+    //     var domField = e.currentTarget;
+    //     var newFormData = this.state.formData;
+    //     newFormData[domField.dataset.formAttr] = domField.value;
+    //     this.setState({'formData': newFormData});
+    // },
 
     deleteRectangleZone: function () {
         rectanglezonetemplateActions.delete(this.state.formData.id);

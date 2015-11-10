@@ -32,7 +32,7 @@ rectanglezonetemplateActions.delete.listen(function (id) {
     $.ajax({
         contentType: 'text/plain',
         method: 'DELETE',
-        url: env.apiURL + '/rectanglezonetemplate/del/' + id,
+        url: env.apiURL + '/rectanglezonetemplate/' + id,
         crossDomain: true,
         success: function () {
             rectanglezonetemplateActions.deleteSuccess(id);
@@ -64,7 +64,7 @@ rectanglezonetemplateActions.add.listen(function (data) {
     console.debug('rectanglezonetemplateActions#post', 'arguments:', arguments);
     $.ajax({
         method: 'POST',
-        url: env.apiURL + '/rectanglezonetemplate/create/' + data.login + '/' + data.password + '/' + data.mail,
+        url: env.apiURL + '/rectanglezonetemplate/create/' + data.name,
         data: data,
         dataType: 'json',
         crossDomain: true,
