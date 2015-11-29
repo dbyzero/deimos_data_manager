@@ -8,3 +8,9 @@
     height: 600px;
     overflow: scroll;
 }
+
+.skill-icons {
+    float:left;
+    margin-top: -5px;
+    margin-right: 5px;
+}

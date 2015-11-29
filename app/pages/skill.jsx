@@ -104,7 +104,7 @@ var Skill = React.createClass({
                 <td>{dataRow.id}</td>
                 <td>{dataRow.name}</td>
                 <td>{dataRow.description}</td>
-                <td>{dataRow.icon}</td>
+                <td>{dataRow.icon}<div className={dataRow.icon + " skill-icons"}></div></td>
                 <td>{dataRow.replaceAttack ? 'Yes' : 'No'}</td>
                 <td>{JSON.stringify(dataRow.passiveEffect)}</td>
                 <td>{JSON.stringify(dataRow.onActivate)}</td>
