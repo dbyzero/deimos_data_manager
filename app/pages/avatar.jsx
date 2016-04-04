@@ -83,8 +83,9 @@ var Account = React.createClass({
                   </Modal.Header>
                   <Modal.Body>
                     <Row className="show-grid">
-                        <Col xs={12} sm={6}><Input bsSize="small" addonBefore="Name" type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} data-form-attr="name"/></Col>
-                        <Col xs={12} sm={6}><Input bsSize="small" addonBefore="Account" type="text" value={this.state.formData.account_name} onChange={this.onChangeFormValue} data-form-attr="account_name"/></Col>
+                        <Col xs={12} sm={4}><Input bsSize="small" addonBefore="Name" type="text" value={this.state.formData.name} onChange={this.onChangeFormValue} data-form-attr="name"/></Col>
+                        <Col xs={12} sm={4}><Input bsSize="small" addonBefore="Account" type="text" value={this.state.formData.account_name} onChange={this.onChangeFormValue} data-form-attr="account_name"/></Col>
+                        <Col xs={12} sm={4}><Input bsSize="small" addonBefore="Skin" type="text" value={this.state.formData.skin} onChange={this.onChangeFormValue} data-form-attr="skin"/></Col>
                     </Row>
                     <Row className="show-grid">
                         <Col xs={12} sm={6}><Input bsSize="small" min="0" max="50" addonBefore="Strength" addonAfter={this.state.formData.strengh} type="range" value={this.state.formData.strengh} onChange={this.onChangeFormValue} data-form-attr="strengh"/></Col>
