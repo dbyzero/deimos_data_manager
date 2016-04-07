@@ -1,9 +1,9 @@
 var routes = require('./routes');
+var env = require('./env');
 var Router = ReactRouter;
 
 module.exports = {
     init: function () {
-        linkSpritesheet();
         linkCss();
         initRouter();
     }
@@ -15,12 +15,21 @@ var initRouter = function () {
     });
 };
 
-var linkSpritesheet = function () {
+var linkCss = function () {
+    //skills
     var domLink = document.createElement("link");
     domLink.rel = "stylesheet";
-    domLink.href = "http://puck.dbyzero.com:8080/css/skills.css?v=2";
+    domLink.href = env.assetURL + "/css/skills.css?v=2";
     document.head.appendChild(domLink);
-};
 
-var linkCss = function () {
+    //avatar
+    var domLink = document.createElement("link");
+    domLink.rel = "stylesheet";
+    domLink.href = env.assetURL + "/css/keyframes.css?v=2";
+    document.head.appendChild(domLink);
+
+    var domLink = document.createElement("link");
+    domLink.rel = "stylesheet";
+    domLink.href = env.assetURL + "/css/animations.css?v=2";
+    document.head.appendChild(domLink);
 };

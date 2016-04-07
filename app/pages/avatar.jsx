@@ -141,7 +141,7 @@ var Account = React.createClass({
                 <td>{dataRow.name}</td>
                 <td>{dataRow.account_name}</td>
                 <td>{dataRow.strengh}/{dataRow.endurance}/{dataRow.focus}/{dataRow.training}/{dataRow.willpower}</td>
-                <td>#TODO SKIN</td>
+                <td><div className="avatar-animation-run-right" style={{'background':'url(http://localhost:8000/spritesheet/avatar/'+dataRow.id+'.png)'}}></div></td>
                 <td>
                   <ButtonToolbar>
                     <Button bsStyle="primary" onClick={this.showEditPopup} data-id={dataRow.id}><Glyphicon glyph="edit" /></Button>
