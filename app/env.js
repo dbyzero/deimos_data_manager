@@ -1,4 +1,4 @@
 module.exports = {
-    'apiURL': 'http://puck.dbyzero.com:39999',
+    'apiURL': 'http://172.19.0.2',
     'assetURL': 'http://localhost:8000'
 };
